@@ -5,7 +5,7 @@ import {
   getOpenAccessBreakdown,
   getCountryCollaborations,
 } from "@/services/openalex/api";
-import { Award, TrendingUp, BookOpen, Globe, Users, Unlock, ExternalLink, CheckCircle2 } from "lucide-react";
+import { Award, TrendingUp, BookOpen, Globe, Users, Unlock, CheckCircle2 } from "lucide-react";
 
 const SDG_GOALS = [
   { id: 1, title: "No Poverty", icon: "🏠" },
