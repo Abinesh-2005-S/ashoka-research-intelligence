@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { ArrowRight, BarChart3, Building2, BookOpen, Globe, Unlock } from "lucide-react";
+import { ArrowRight, BarChart3, Building2, BookOpen, Globe, Unlock, Users } from "lucide-react";
 import {
   getInstitutionSummary,
   getTopAuthors,
   getPublicationTrends,
   getOpenAccessBreakdown,
   getCountryCollaborations,
+  getInstitutionAuthorsCount,
 } from "@/services/openalex/api";
 const portals = [
   {
@@ -38,12 +39,13 @@ const portals = [
 ];
 
 export default async function Home() {
-  const [summary, authors, trends, oaBreakdown, countryCollabs] = await Promise.all([
+  const [summary, authors, trends, oaBreakdown, countryCollabs, totalAuthors] = await Promise.all([
     getInstitutionSummary(),
     getTopAuthors(),
     getPublicationTrends(),
     getOpenAccessBreakdown(),
     getCountryCollaborations(),
+    getInstitutionAuthorsCount(),
   ]);
 
   const totalWorks = summary.works_count;
@@ -52,6 +54,7 @@ export default async function Home() {
   const totalOA = oaBreakdown.filter((o: any) => o.key !== "closed").reduce((s: number, o: any) => s + o.count, 0);
   const oaPercent = Math.round((totalOA / totalWorks) * 100);
   const partnerCountries = countryCollabs.filter((c: any) => c.key !== "IN").length;
+
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
@@ -112,9 +115,10 @@ export default async function Home() {
       {/* ── IMPACT STATS ── */}
       <section className="bg-white border-b border-slate-200">
         <div className="container mx-auto px-6 py-12">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-slate-200">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 divide-x divide-slate-200">
             {[
               { value: totalWorks.toLocaleString(), label: "Publications", sub: "Peer-reviewed research outputs", icon: BookOpen },
+              { value: totalAuthors.toLocaleString(), label: "Scholars & Authors", sub: "Affiliated researchers", icon: Users },
               { value: totalCitations.toLocaleString(), label: "Total Citations", sub: "Referenced globally", icon: ArrowRight },
               { value: `${oaPercent}%`, label: "Open Access", sub: "Freely available worldwide", icon: Unlock },
               { value: `${partnerCountries}+`, label: "Partner Countries", sub: "International collaborations", icon: Globe },

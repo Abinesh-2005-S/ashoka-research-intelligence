@@ -87,6 +87,13 @@ export async function getTopAuthors(id: string = ASHOKA_ID): Promise<Author[]> {
   return data.results;
 }
 
+export async function getInstitutionAuthorsCount(id: string = ASHOKA_ID): Promise<number> {
+  const data = await cachedFetch<{ meta: { count: number } }>(
+    `${OPENALEX_API_BASE}/authors?filter=affiliations.institution.id:${id}&per-page=1`
+  );
+  return data.meta?.count ?? 0;
+}
+
 export async function getRecentPublications(
   id: string = ASHOKA_ID,
   page = 1,
