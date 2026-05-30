@@ -6,13 +6,13 @@ export function Scorecard({ summary }: { summary: InstitutionSummary }) {
   const metrics = [
     {
       title: "Total Outputs",
-      value: summary.works_count.toLocaleString(),
+      value: summary.works_count.toLocaleString("en-US"),
       icon: <BookOpen className="h-4 w-4 text-muted-foreground" />,
       description: "Lifetime research outputs",
     },
     {
       title: "Total Citations",
-      value: summary.cited_by_count.toLocaleString(),
+      value: summary.cited_by_count.toLocaleString("en-US"),
       icon: <Quote className="h-4 w-4 text-muted-foreground" />,
       description: "Across all outputs",
     },
@@ -51,3 +51,4 @@ export function Scorecard({ summary }: { summary: InstitutionSummary }) {
     </div>
   );
 }
+

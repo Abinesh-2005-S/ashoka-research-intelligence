@@ -58,3 +58,4 @@ export function PublicationChart({ trends }: { trends: any[] }) {
     </div>
   );
 }
+

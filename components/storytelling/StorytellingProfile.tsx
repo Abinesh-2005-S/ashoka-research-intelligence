@@ -1,38 +1,34 @@
-import {
-  getInstitutionSummary, getTopAuthors, getOpenAccessBreakdown,
-  getCountryCollaborations, getRecentPublications,
-} from "@/services/openalex/api";
 import { ExternalLink, Globe, Unlock, ArrowRight, MapPin, Mail, Phone, BookOpen, Users } from "lucide-react";
-import Link from "next/link";
 
 const SDG_STORIES = [
-  { id: 3, icon: "❤️", title: "Good Health & Well-Being", desc: "Epidemiology, public health, and behavioral medicine research at Ashoka is shaping evidence-based health policy across India." },
-  { id: 4, icon: "📚", title: "Quality Education", desc: "From curriculum reform to large-scale learning outcome studies, our scholars are redefining how India learns." },
-  { id: 13, icon: "🌍", title: "Climate Action", desc: "Environmental economics, climate modelling, and biodiversity research advance both scientific understanding and policy advocacy." },
-  { id: 10, icon: "🤝", title: "Reduced Inequalities", desc: "Rigorous work on caste, gender, and economic inclusion drives systemic conversations about equity in South Asia." },
-  { id: 16, icon: "🕊️", title: "Peace, Justice & Institutions", desc: "Legal scholars, political scientists, and sociologists collaborate on governance and democratic institution research." },
-  { id: 9, icon: "🏭", title: "Industry, Innovation & Infrastructure", desc: "Computer science and data research drives innovation in AI, computational biology, and digital economics." },
+  { id: 3, title: "Good Health & Well-Being", desc: "Epidemiology, public health, and behavioral medicine research at Ashoka is shaping evidence-based health policy across India." },
+  { id: 4, title: "Quality Education", desc: "From curriculum reform to large-scale learning outcome studies, our scholars are redefining how India learns." },
+  { id: 13, title: "Climate Action", desc: "Environmental economics, climate modelling, and biodiversity research advance both scientific understanding and policy advocacy." },
+  { id: 10, title: "Reduced Inequalities", desc: "Rigorous work on caste, gender, and economic inclusion drives systemic conversations about equity in South Asia." },
+  { id: 16, title: "Peace, Justice & Institutions", desc: "Legal scholars, political scientists, and sociologists collaborate on governance and democratic institution research." },
+  { id: 9, title: "Industry, Innovation & Infrastructure", desc: "Computer science and data research drives innovation in AI, computational biology, and digital economics." },
 ];
 
-export default async function StorytellingProfile() {
-  const [summary, authors, oaBreakdown, countryCollabs, publications] = await Promise.all([
-    getInstitutionSummary(), getTopAuthors(), getOpenAccessBreakdown(),
-    getCountryCollaborations(), getRecentPublications(undefined, 1, 6, "cited_by_count:desc"),
-  ]);
+export interface StorytellingProfileProps {
+  summary: any;
+  authors: any[];
+  oaBreakdown: any[];
+  countryCollabs: any[];
+  publications: any;
+}
 
-  const totalWorks = summary.works_count;
-  const totalCitations = summary.cited_by_count;
-  const hIndex = summary.summary_stats.h_index;
+export function StorytellingProfile({ summary, authors, oaBreakdown, countryCollabs, publications }: StorytellingProfileProps) {
+  const totalWorks = summary?.works_count ?? 0;
   const totalOA = oaBreakdown.filter((o: any) => o.key !== "closed").reduce((s: number, o: any) => s + o.count, 0);
-  const oaPercent = Math.round((totalOA / totalWorks) * 100);
+  const oaPercent = totalWorks > 0 ? Math.round((totalOA / totalWorks) * 100) : 0;
   const partnerCountries = countryCollabs.filter((c: any) => c.key !== "IN").length;
   const topPartners = countryCollabs.filter((c: any) => c.key !== "IN").slice(0, 8);
   const topPubs = (publications?.results ?? []).slice(0, 3);
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="flex flex-col bg-white w-full animate-in fade-in duration-500">
 
-      {/* ── HERO ── */}
+      {/* ── HERO ──
       <section className="relative border-b border-slate-200 overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-cover bg-center"
@@ -43,22 +39,14 @@ export default async function StorytellingProfile() {
           <div className="max-w-2xl">
             <p className="text-xs font-bold text-blue-300 uppercase tracking-widest mb-4">Research Impact · Public Profile</p>
             <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-5">
-              The Research Story of<br />{summary.display_name}
+              The Research Story of<br />{summary?.display_name}
             </h1>
-            <p className="text-lg text-slate-300 leading-relaxed mb-8">
-              Explore how Ashoka's scholars are addressing the world's most pressing challenges — through evidence, inquiry, and open knowledge.
+            <p className="text-lg text-slate-300 leading-relaxed">
+              Explore how our scholars are addressing the world's most pressing challenges — through evidence, inquiry, and open knowledge.
             </p>
-            <div className="flex gap-3 flex-wrap">
-              <Link href="/intelligence" className="inline-flex items-center gap-2 bg-white text-slate-900 text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-slate-100 transition-colors">
-                Research Analytics <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link href="/executive" className="inline-flex items-center gap-2 bg-white/10 border border-white/30 text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-white/20 transition-colors">
-                Executive Dashboard
-              </Link>
-            </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ── FEATURED PUBLICATIONS ── */}
       <section className="py-16 bg-slate-50 border-b border-slate-200">
@@ -82,12 +70,12 @@ export default async function StorytellingProfile() {
                 </p>
                 <div className="flex items-center justify-between pt-3 border-t border-slate-100">
                   <div>
-                    <span className="text-xl font-bold text-slate-900">{(pub.cited_by_count ?? 0).toLocaleString()}</span>
+                    <span className="text-xl font-bold text-slate-900">{(pub.cited_by_count ?? 0).toLocaleString("en-US")}</span>
                     <span className="text-xs text-slate-400 ml-1">citations</span>
                   </div>
                   {pub.doi && (
                     <a href={`https://doi.org/${pub.doi}`} target="_blank" rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-xs text-blue-600 hover:underline">
+                      className="inline-flex items-center gap-1 text-xs text-slate-600 font-medium hover:text-slate-900 hover:underline">
                       Read <ExternalLink className="w-3 h-3" />
                     </a>
                   )}
@@ -103,7 +91,7 @@ export default async function StorytellingProfile() {
         <div className="container mx-auto px-6">
           <p className="section-label mb-2">The Scholars</p>
           <h2 className="text-2xl font-bold text-slate-900 mb-2">Faculty Voices</h2>
-          <p className="text-slate-500 mb-10 max-w-xl">Researchers driving Ashoka's global scholarly impact.</p>
+          <p className="text-slate-500 mb-10 max-w-xl">Researchers driving global scholarly impact.</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {authors.slice(0, 3).map((author: any) => (
               <div key={author.id} className="pro-card p-5 hover:shadow-md transition-shadow">
@@ -113,13 +101,13 @@ export default async function StorytellingProfile() {
                   </div>
                   <div>
                     <div className="font-semibold text-slate-900 leading-tight">{author.display_name}</div>
-                    <div className="text-xs text-slate-400 mt-0.5">Ashoka University</div>
+                    <div className="text-xs text-slate-400 mt-0.5">{summary?.display_name}</div>
                   </div>
                 </div>
                 <div className="grid grid-cols-3 gap-2 mb-4">
                   {[
                     { l: "Works", v: author.works_count },
-                    { l: "Citations", v: (author.cited_by_count ?? 0).toLocaleString() },
+                    { l: "Citations", v: (author.cited_by_count ?? 0).toLocaleString("en-US") },
                     { l: "h-index", v: author.summary_stats?.h_index ?? "–" },
                   ].map(m => (
                     <div key={m.l} className="bg-slate-50 rounded-lg p-2 text-center border border-slate-100">
@@ -150,10 +138,12 @@ export default async function StorytellingProfile() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {SDG_STORIES.map(sdg => (
               <div key={sdg.id} className="pro-card p-5 hover:shadow-md transition-shadow">
-                <div className="flex items-start gap-3 mb-3">
-                  <span className="text-2xl shrink-0">{sdg.icon}</span>
-                  <div>
-                    <div className="text-xs font-bold text-blue-600 uppercase tracking-wide mb-0.5">SDG {sdg.id}</div>
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="w-16 h-16 shrink-0 rounded-md overflow-hidden border border-slate-100 shadow-sm">
+                    <img src={`/sdg/${sdg.id}.jpg`} alt={`SDG ${sdg.id}`} className="w-full h-full object-cover" />
+                  </div>
+                  <div className="pt-1">
+                    <div className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-0.5">SDG {sdg.id}</div>
                     <h3 className="font-bold text-slate-900 text-sm leading-snug">{sdg.title}</h3>
                   </div>
                 </div>
@@ -172,7 +162,7 @@ export default async function StorytellingProfile() {
               <p className="section-label mb-2">International Reach</p>
               <h2 className="text-2xl font-bold text-slate-900 mb-3">A Global Research Community</h2>
               <p className="text-slate-600 leading-relaxed mb-6">
-                Ashoka researchers co-publish with scholars from {partnerCountries}+ countries, reflecting our commitment to producing internationally relevant knowledge.
+                Our researchers co-publish with scholars from {partnerCountries}+ countries, reflecting our commitment to producing internationally relevant knowledge.
               </p>
               <div className="flex flex-wrap gap-2">
                 {topPartners.map((c: any) => (
@@ -184,8 +174,8 @@ export default async function StorytellingProfile() {
               </div>
             </div>
             <div className="pro-card p-6">
-              <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center mb-4">
-                <Unlock className="w-5 h-5 text-blue-700" />
+              <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
+                <Unlock className="w-5 h-5 text-slate-600" />
               </div>
               <h3 className="font-bold text-slate-900 mb-2">Open Science Pledge</h3>
               <div className="flex items-baseline gap-2 mb-3">
@@ -193,10 +183,10 @@ export default async function StorytellingProfile() {
                 <span className="text-slate-500 text-sm">of publications are Open Access</span>
               </div>
               <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                {totalOA.toLocaleString()} out of {totalWorks.toLocaleString()} publications are freely available — ensuring knowledge reaches researchers, policymakers, and citizens worldwide.
+                {totalOA.toLocaleString("en-US")} out of {totalWorks.toLocaleString("en-US")} publications are freely available — ensuring knowledge reaches researchers, policymakers, and citizens worldwide.
               </p>
               <div className="data-bar-track h-3">
-                <div className="data-bar-fill bg-emerald-600 h-full" style={{ width: `${oaPercent}%` }} />
+                <div className="data-bar-fill h-full" style={{ width: `${oaPercent}%` }} />
               </div>
               <div className="flex justify-between text-xs text-slate-400 mt-1.5">
                 <span>0%</span>
@@ -208,56 +198,7 @@ export default async function StorytellingProfile() {
         </div>
       </section>
 
-      {/* ── CONTACT & CTA ── */}
-      <section className="py-16 bg-slate-50">
-        <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-12">
-            <div>
-              <p className="section-label mb-2">Work With Us</p>
-              <h2 className="text-2xl font-bold text-slate-900 mb-3">Join Our Research Ecosystem</h2>
-              <p className="text-slate-600 leading-relaxed mb-6">
-                Whether you are a prospective faculty member, industry partner, or PhD candidate — there is a place for you in the Ashoka research community.
-              </p>
-              <div className="flex gap-3 flex-wrap">
-                <Link href="/intelligence" className="inline-flex items-center gap-2 bg-slate-900 text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-slate-800 transition-colors">
-                  Research Data <ArrowRight className="w-4 h-4" />
-                </Link>
-                <Link href="/executive" className="inline-flex items-center gap-2 bg-white text-slate-700 text-sm font-semibold px-5 py-2.5 rounded-lg border border-slate-300 hover:bg-slate-50 transition-colors">
-                  Executive View
-                </Link>
-              </div>
-            </div>
-            <div>
-              <p className="section-label mb-4">Contact</p>
-              <ul className="space-y-4">
-                {[
-                  { icon: MapPin, label: "Address", val: "Plot No. 2, Rajiv Gandhi Education City, Sonepat, Haryana – 131029, India" },
-                  { icon: Phone, label: "Phone", val: "+91 0130 230 0000" },
-                  { icon: Mail, label: "Email", val: "research@ashoka.edu.in" },
-                  { icon: Globe, label: "Website", val: "www.ashoka.edu.in" },
-                ].map(c => (
-                  <li key={c.label} className="flex items-start gap-3">
-                    <div className="w-8 h-8 bg-white border border-slate-200 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                      <c.icon className="w-4 h-4 text-slate-500" />
-                    </div>
-                    <div>
-                      <div className="text-xs font-semibold text-slate-500 mb-0.5">{c.label}</div>
-                      <div className="text-sm text-slate-700">{c.val}</div>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── FOOTER ── */}
-      <footer className="border-t border-slate-200 bg-white py-6">
-        <div className="container mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span className="text-xs text-slate-400">© {new Date().getFullYear()} Ashoka University Research Intelligence</span>
-        </div>
-      </footer>
     </div>
   );
 }
+
