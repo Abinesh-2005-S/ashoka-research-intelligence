@@ -8,23 +8,23 @@ import {
 import { Award, TrendingUp, BookOpen, Globe, Users, Unlock, ExternalLink, CheckCircle2 } from "lucide-react";
 
 const SDG_GOALS = [
-  { id: 1,  title: "No Poverty",              icon: "🏠" },
-  { id: 2,  title: "Zero Hunger",             icon: "🌾" },
-  { id: 3,  title: "Good Health",             icon: "❤️" },
-  { id: 4,  title: "Quality Education",       icon: "📚" },
-  { id: 5,  title: "Gender Equality",         icon: "⚖️" },
-  { id: 6,  title: "Clean Water",             icon: "💧" },
-  { id: 7,  title: "Clean Energy",            icon: "☀️" },
-  { id: 8,  title: "Decent Work",             icon: "💼" },
-  { id: 9,  title: "Industry & Innovation",   icon: "🏭" },
-  { id: 10, title: "Reduced Inequalities",    icon: "🤝" },
-  { id: 11, title: "Sustainable Cities",      icon: "🏙️" },
+  { id: 1, title: "No Poverty", icon: "🏠" },
+  { id: 2, title: "Zero Hunger", icon: "🌾" },
+  { id: 3, title: "Good Health", icon: "❤️" },
+  { id: 4, title: "Quality Education", icon: "📚" },
+  { id: 5, title: "Gender Equality", icon: "⚖️" },
+  { id: 6, title: "Clean Water", icon: "💧" },
+  { id: 7, title: "Clean Energy", icon: "☀️" },
+  { id: 8, title: "Decent Work", icon: "💼" },
+  { id: 9, title: "Industry & Innovation", icon: "🏭" },
+  { id: 10, title: "Reduced Inequalities", icon: "🤝" },
+  { id: 11, title: "Sustainable Cities", icon: "🏙️" },
   { id: 12, title: "Responsible Consumption", icon: "♻️" },
-  { id: 13, title: "Climate Action",          icon: "🌍" },
-  { id: 14, title: "Life Below Water",        icon: "🌊" },
-  { id: 15, title: "Life on Land",            icon: "🌿" },
-  { id: 16, title: "Peace & Justice",         icon: "🕊️" },
-  { id: 17, title: "Partnerships",            icon: "🌐" },
+  { id: 13, title: "Climate Action", icon: "🌍" },
+  { id: 14, title: "Life Below Water", icon: "🌊" },
+  { id: 15, title: "Life on Land", icon: "🌿" },
+  { id: 16, title: "Peace & Justice", icon: "🕊️" },
+  { id: 17, title: "Partnerships", icon: "🌐" },
 ];
 
 const TOPIC_SDG_MAP: Record<string, number[]> = {
@@ -96,7 +96,7 @@ export default async function ExecutiveDashboard() {
               <h1 className="text-3xl font-bold text-slate-900">{summary.display_name}</h1>
               <div className="flex items-center gap-2 mt-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                <span className="text-sm text-slate-500">Live data — OpenAlex verified</span>
+                <span className="text-sm text-slate-500">Live data — verified</span>
               </div>
             </div>
             {/* Headline metrics */}
@@ -195,7 +195,7 @@ export default async function ExecutiveDashboard() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-slate-200">
-                  {["Rank", "Researcher", "Works", "Citations", "h-index", "Profile"].map(h => (
+                  {["Rank", "Researcher", "Works", "Citations", "h-index"].map(h => (
                     <th key={h} className={`py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide ${h === "Rank" || h === "Researcher" ? "text-left px-3" : "text-right px-3"}`}>{h}</th>
                   ))}
                 </tr>
@@ -218,11 +218,6 @@ export default async function ExecutiveDashboard() {
                       <span className="badge-neutral">{author.summary_stats?.h_index ?? "–"}</span>
                     </td>
                     <td className="py-3 px-3 text-right">
-                      <a href={`https://openalex.org/authors/${author.id?.split("/").pop()}`}
-                        target="_blank" rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-xs text-blue-600 hover:underline">
-                        View <ExternalLink className="w-3 h-3" />
-                      </a>
                     </td>
                   </tr>
                 ))}
@@ -242,11 +237,10 @@ export default async function ExecutiveDashboard() {
               const isActive = relevantSDGs.has(sdg.id);
               return (
                 <div key={sdg.id} title={sdg.title}
-                  className={`rounded-lg p-2 text-center border transition-all ${
-                    isActive
-                      ? "bg-blue-50 border-blue-200 shadow-sm"
-                      : "bg-slate-50 border-slate-200 opacity-40"
-                  }`}>
+                  className={`rounded-lg p-2 text-center border transition-all ${isActive
+                    ? "bg-blue-50 border-blue-200 shadow-sm"
+                    : "bg-slate-50 border-slate-200 opacity-40"
+                    }`}>
                   <div className="text-lg">{sdg.icon}</div>
                   <div className="text-xs font-bold text-slate-600 mt-0.5">{sdg.id}</div>
                 </div>

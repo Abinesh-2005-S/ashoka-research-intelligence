@@ -6,12 +6,12 @@ import { ExternalLink, Globe, Unlock, ArrowRight, MapPin, Mail, Phone, BookOpen,
 import Link from "next/link";
 
 const SDG_STORIES = [
-  { id: 3,  icon: "❤️", title: "Good Health & Well-Being",          desc: "Epidemiology, public health, and behavioral medicine research at Ashoka is shaping evidence-based health policy across India." },
-  { id: 4,  icon: "📚", title: "Quality Education",                 desc: "From curriculum reform to large-scale learning outcome studies, our scholars are redefining how India learns." },
-  { id: 13, icon: "🌍", title: "Climate Action",                    desc: "Environmental economics, climate modelling, and biodiversity research advance both scientific understanding and policy advocacy." },
-  { id: 10, icon: "🤝", title: "Reduced Inequalities",              desc: "Rigorous work on caste, gender, and economic inclusion drives systemic conversations about equity in South Asia." },
-  { id: 16, icon: "🕊️", title: "Peace, Justice & Institutions",    desc: "Legal scholars, political scientists, and sociologists collaborate on governance and democratic institution research." },
-  { id: 9,  icon: "🏭", title: "Industry, Innovation & Infrastructure", desc: "Computer science and data research drives innovation in AI, computational biology, and digital economics." },
+  { id: 3, icon: "❤️", title: "Good Health & Well-Being", desc: "Epidemiology, public health, and behavioral medicine research at Ashoka is shaping evidence-based health policy across India." },
+  { id: 4, icon: "📚", title: "Quality Education", desc: "From curriculum reform to large-scale learning outcome studies, our scholars are redefining how India learns." },
+  { id: 13, icon: "🌍", title: "Climate Action", desc: "Environmental economics, climate modelling, and biodiversity research advance both scientific understanding and policy advocacy." },
+  { id: 10, icon: "🤝", title: "Reduced Inequalities", desc: "Rigorous work on caste, gender, and economic inclusion drives systemic conversations about equity in South Asia." },
+  { id: 16, icon: "🕊️", title: "Peace, Justice & Institutions", desc: "Legal scholars, political scientists, and sociologists collaborate on governance and democratic institution research." },
+  { id: 9, icon: "🏭", title: "Industry, Innovation & Infrastructure", desc: "Computer science and data research drives innovation in AI, computational biology, and digital economics." },
 ];
 
 export default async function StorytellingProfile() {
@@ -56,26 +56,6 @@ export default async function StorytellingProfile() {
                 Executive Dashboard
               </Link>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── IMPACT STATS ── */}
-      <section className="bg-white border-b border-slate-200">
-        <div className="container mx-auto px-6 py-12">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-slate-200">
-            {[
-              { value: totalWorks.toLocaleString(), label: "Publications", sub: "Peer-reviewed research outputs", icon: BookOpen },
-              { value: totalCitations.toLocaleString(), label: "Total Citations", sub: "Referenced globally", icon: ArrowRight },
-              { value: `${oaPercent}%`, label: "Open Access", sub: "Freely available worldwide", icon: Unlock },
-              { value: `${partnerCountries}+`, label: "Partner Countries", sub: "International collaborations", icon: Globe },
-            ].map(stat => (
-              <div key={stat.label} className="px-4 first:pl-0">
-                <div className="text-3xl font-bold text-slate-900 mb-1">{stat.value}</div>
-                <div className="text-sm font-semibold text-slate-700 mb-0.5">{stat.label}</div>
-                <div className="text-xs text-slate-400">{stat.sub}</div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
@@ -155,11 +135,6 @@ export default async function StorytellingProfile() {
                     ))}
                   </div>
                 )}
-                <a href={`https://openalex.org/authors/${author.id?.split("/").pop()}`}
-                  target="_blank" rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-xs text-blue-600 hover:underline mt-1">
-                  OpenAlex Profile <ExternalLink className="w-3 h-3" />
-                </a>
               </div>
             ))}
           </div>
@@ -281,7 +256,6 @@ export default async function StorytellingProfile() {
       <footer className="border-t border-slate-200 bg-white py-6">
         <div className="container mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-2">
           <span className="text-xs text-slate-400">© {new Date().getFullYear()} Ashoka University Research Intelligence</span>
-          <span className="text-xs text-slate-400">Data from <a href="https://openalex.org" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">OpenAlex</a></span>
         </div>
       </footer>
     </div>

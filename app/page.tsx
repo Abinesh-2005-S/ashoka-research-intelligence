@@ -1,6 +1,12 @@
 import Link from "next/link";
-import { ArrowRight, BarChart3, Building2, BookOpen, MapPin, Phone, Mail, Globe } from "lucide-react";
-
+import { ArrowRight, BarChart3, Building2, BookOpen, Globe, Unlock } from "lucide-react";
+import {
+  getInstitutionSummary,
+  getTopAuthors,
+  getPublicationTrends,
+  getOpenAccessBreakdown,
+  getCountryCollaborations,
+} from "@/services/openalex/api";
 const portals = [
   {
     href: "/intelligence",
@@ -26,12 +32,27 @@ const portals = [
     title: "Research Storytelling",
     audience: "Industry Partners · Prospective Faculty & PhDs",
     description:
-      "Narrative-led exploration of breakthroughs, faculty voices, global impact, and our open-science pledge.",
+      "Narrative-led exploration of breakthroughs, faculty voices, global impact, International Reach and our open-science pledge.",
     cta: "Explore Stories",
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const [summary, authors, trends, oaBreakdown, countryCollabs] = await Promise.all([
+    getInstitutionSummary(),
+    getTopAuthors(),
+    getPublicationTrends(),
+    getOpenAccessBreakdown(),
+    getCountryCollaborations(),
+  ]);
+
+  const totalWorks = summary.works_count;
+  const totalCitations = summary.cited_by_count;
+
+  const totalOA = oaBreakdown.filter((o: any) => o.key !== "closed").reduce((s: number, o: any) => s + o.count, 0);
+  const oaPercent = Math.round((totalOA / totalWorks) * 100);
+  const partnerCountries = countryCollabs.filter((c: any) => c.key !== "IN").length;
+
   return (
     <div className="flex flex-col min-h-screen bg-white">
 
@@ -54,7 +75,6 @@ export default function Home() {
             <div className="w-px h-10 bg-slate-400/50" />
             <div className="text-left">
               <div className="text-xs font-bold text-blue-700 uppercase tracking-widest leading-tight">Research Intelligence Portal</div>
-              <div className="text-xs text-slate-600 mt-0.5">Powered by OpenAlex Live Data</div>
             </div>
           </div>
 
@@ -89,6 +109,25 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── IMPACT STATS ── */}
+      <section className="bg-white border-b border-slate-200">
+        <div className="container mx-auto px-6 py-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-slate-200">
+            {[
+              { value: totalWorks.toLocaleString(), label: "Publications", sub: "Peer-reviewed research outputs", icon: BookOpen },
+              { value: totalCitations.toLocaleString(), label: "Total Citations", sub: "Referenced globally", icon: ArrowRight },
+              { value: `${oaPercent}%`, label: "Open Access", sub: "Freely available worldwide", icon: Unlock },
+              { value: `${partnerCountries}+`, label: "Partner Countries", sub: "International collaborations", icon: Globe },
+            ].map(stat => (
+              <div key={stat.label} className="px-4 first:pl-0">
+                <div className="text-3xl font-bold text-slate-900 mb-1">{stat.value}</div>
+                <div className="text-sm font-semibold text-slate-700 mb-0.5">{stat.label}</div>
+                <div className="text-xs text-slate-400">{stat.sub}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
       {/* ── PORTAL SELECTION ── */}
       <section className="py-16 bg-slate-50 border-b border-slate-200">
         <div className="container mx-auto px-6">
@@ -133,9 +172,6 @@ export default function Home() {
                 <p>
                   Research at Ashoka spans social sciences, natural sciences, humanities, and interdisciplinary domains — producing work of national and global significance that informs policy, practice, and public discourse.
                 </p>
-                <p>
-                  This portal aggregates institutional research data in real-time from OpenAlex, providing transparent, verifiable performance metrics for all stakeholders.
-                </p>
               </div>
             </div>
           </div>
@@ -145,8 +181,7 @@ export default function Home() {
       {/* ── FOOTER ── */}
       <footer className="border-t border-slate-200 bg-slate-50 py-6">
         <div className="container mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span className="text-xs text-slate-400">© {new Date().getFullYear()} Ashoka University Research Intelligence Portal</span>
-          <span className="text-xs text-slate-400">Data sourced from <a href="https://openalex.org" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">OpenAlex</a></span>
+          <span className="text-xs text-slate-400 ">© {new Date().getFullYear()} Ashoka University Research Intelligence Portal</span>
         </div>
       </footer>
     </div>
