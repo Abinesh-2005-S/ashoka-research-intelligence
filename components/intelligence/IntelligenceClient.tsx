@@ -80,7 +80,7 @@ export function IntelligenceClient({
             <div>
               <p className="section-label mb-1">Research Intelligence Platform</p>
               <h1 className="text-2xl font-bold text-slate-900">{summary?.display_name}</h1>
-              <p className="text-sm text-slate-500 mt-1">Live analytics powered by OpenAlex</p>
+              <p className="text-sm text-slate-500 mt-1">Live analytics</p>
             </div>
             {/* KPI Strip */}
             <div className="flex items-center gap-6 flex-wrap">
@@ -111,11 +111,10 @@ export function IntelligenceClient({
               <button
                 key={tab.id}
                 onClick={() => { setActiveTab(tab.id); setSearchQuery(""); }}
-                className={`flex items-center gap-2 px-5 py-3.5 text-sm font-semibold whitespace-nowrap border-b-2 transition-all ${
-                  activeTab === tab.id
-                    ? "border-blue-600 text-blue-700"
-                    : "border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300"
-                }`}
+                className={`flex items-center gap-2 px-5 py-3.5 text-sm font-semibold whitespace-nowrap border-b-2 transition-all ${activeTab === tab.id
+                  ? "border-blue-600 text-blue-700"
+                  : "border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300"
+                  }`}
               >
                 <tab.icon className="w-4 h-4" />
                 {tab.label}
@@ -148,9 +147,8 @@ export function IntelligenceClient({
               <div className="flex gap-2">
                 {[["citations", "Most Cited"], ["newest", "Newest First"]].map(([val, label]) => (
                   <button key={val} onClick={() => setSortBy(val as any)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
-                      sortBy === val ? "bg-slate-900 text-white border-slate-900" : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"
-                    }`}>{label}</button>
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${sortBy === val ? "bg-slate-900 text-white border-slate-900" : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"
+                      }`}>{label}</button>
                 ))}
               </div>
             </div>
@@ -224,10 +222,6 @@ export function IntelligenceClient({
                 )}
                 <div className="flex items-center justify-between pt-3 border-t border-slate-100">
                   <span className="text-xs text-slate-400">#{i + 1} by citations</span>
-                  <a href={`https://openalex.org/authors/${author.id?.split("/").pop()}`} target="_blank" rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-xs text-blue-600 hover:underline">
-                    OpenAlex <ExternalLink className="w-3 h-3" />
-                  </a>
                 </div>
               </div>
             ))}
@@ -311,7 +305,7 @@ export function IntelligenceClient({
                       return topOATypes.map((o: any, i: number) => {
                         const pct = o.count / totalWorks;
                         const dash = pct * circ;
-                        const colors = ["#2563eb","#059669","#64748b","#94a3b8","#cbd5e1"];
+                        const colors = ["#2563eb", "#059669", "#64748b", "#94a3b8", "#cbd5e1"];
                         const el = (
                           <circle key={o.key} cx="60" cy="60" r="44" fill="none" strokeWidth="18"
                             stroke={colors[i]}
@@ -330,7 +324,7 @@ export function IntelligenceClient({
               </div>
               <div className="space-y-3">
                 {topOATypes.map((o: any, i: number) => {
-                  const colors = ["bg-blue-600","bg-emerald-600","bg-slate-500","bg-slate-400","bg-slate-300"];
+                  const colors = ["bg-blue-600", "bg-emerald-600", "bg-slate-500", "bg-slate-400", "bg-slate-300"];
                   return (
                     <div key={o.key} className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
