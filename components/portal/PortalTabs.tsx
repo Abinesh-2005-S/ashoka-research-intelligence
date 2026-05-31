@@ -91,7 +91,7 @@ export function PortalTabs(props: PortalTabsProps) {
             {[
               { id: "executive", label: "Executive Dashboard" },
               { id: "intelligence", label: "Intelligence Platform" },
-              { id: "storytelling", label: "Story Flow" }
+              { id: "storytelling", label: "StoryTelling" }
             ].map(tab => (
               <button
                 key={tab.id}
@@ -150,15 +150,15 @@ export function PortalTabs(props: PortalTabsProps) {
                   </li>
                 ))}
               </ul>
-              
+
               <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-slate-100">
                 {[
                   { icon: Globe, label: "Website", link: summary?.homepage_url || "https://www.ashoka.edu.in" },
                   ...(summary?.ror ? [{ icon: LinkIcon, label: "ROR ID", link: summary.ror }] : []),
                   ...(summary?.ids?.wikipedia ? [{ icon: LinkIcon, label: "Wikipedia", link: summary.ids.wikipedia }] : []),
                 ].map(c => (
-                  <a key={c.label} href={c.link} target="_blank" rel="noopener noreferrer" 
-                     className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 hover:bg-blue-50 text-slate-600 hover:text-blue-700 rounded-lg text-sm font-medium transition-colors border border-slate-200 hover:border-blue-200">
+                  <a key={c.label} href={c.link} target="_blank" rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 hover:bg-blue-50 text-slate-600 hover:text-blue-700 rounded-lg text-sm font-medium transition-colors border border-slate-200 hover:border-blue-200">
                     <c.icon className="w-4 h-4" />
                     {c.label}
                   </a>
