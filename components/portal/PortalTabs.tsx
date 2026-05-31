@@ -32,7 +32,7 @@ export function PortalTabs(props: PortalTabsProps) {
     <div className="flex flex-col min-h-screen">
 
       {/* ── HERO ── */}
-      <section className="relative overflow-hidden border-b border-slate-200">
+      <section className="relative overflow-hidden border-b border-border">
         <div className="absolute inset-0">
           <div
             className="absolute inset-0 bg-cover bg-center"
@@ -50,21 +50,21 @@ export function PortalTabs(props: PortalTabsProps) {
             </div>
           </div>
 
-          <h1 className="text-4xl md:text-6xl font-bold text-slate-900 leading-tight mb-3 drop-shadow-sm">
+          <h1 className="text-4xl md:text-6xl font-bold text-foreground leading-tight mb-3 drop-shadow-sm">
             Ashoka University
           </h1>
           <h2 className="text-3xl md:text-5xl font-bold text-blue-700 leading-tight mb-6 drop-shadow-sm">
             Research Intelligence
           </h2>
 
-          <p className="text-lg text-slate-700 max-w-2xl leading-relaxed">
+          <p className="text-lg text-foreground max-w-2xl leading-relaxed">
             A comprehensive portal for understanding our research performance, scholarly output, and global impact — built for every stakeholder.
           </p>
         </div>
       </section>
 
       {/* ── IMPACT STATS ── */}
-      <section className="bg-white border-b border-slate-200">
+      <section className="bg-white border-b border-border">
         <div className="container mx-auto px-6 py-12">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-8 divide-x divide-slate-200">
             {[
@@ -75,9 +75,9 @@ export function PortalTabs(props: PortalTabsProps) {
               { value: `${partnerCountries}+`, label: "Partner Countries", sub: "International collaborations", icon: Globe },
             ].map(stat => (
               <div key={stat.label} className="px-4 first:pl-0">
-                <div className="text-3xl font-bold text-slate-900 mb-1">{stat.value}</div>
-                <div className="text-sm font-semibold text-slate-700 mb-0.5">{stat.label}</div>
-                <div className="text-xs text-slate-400">{stat.sub}</div>
+                <div className="text-3xl font-bold text-foreground mb-1">{stat.value}</div>
+                <div className="text-sm font-semibold text-foreground mb-0.5">{stat.label}</div>
+                <div className="text-xs text-muted-foreground">{stat.sub}</div>
               </div>
             ))}
           </div>
@@ -85,7 +85,7 @@ export function PortalTabs(props: PortalTabsProps) {
       </section>
 
       {/* ── SUBNAV / TABS ── */}
-      <div className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+      <div className="bg-white border-b border-border sticky top-0 z-50 shadow-sm">
         <div className="px-6">
           <div className="flex items-center justify-center gap-8 overflow-x-auto container mx-auto">
             {[
@@ -96,7 +96,7 @@ export function PortalTabs(props: PortalTabsProps) {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`py-4 text-sm font-bold whitespace-nowrap transition-colors border-b-2 ${activeTab === tab.id ? "border-blue-600 text-blue-700" : "border-transparent text-slate-500 hover:text-slate-900"
+                className={`py-4 text-sm font-bold whitespace-nowrap transition-colors border-b-2 ${activeTab === tab.id ? "border-blue-600 text-blue-700" : "border-transparent text-muted-foreground hover:text-foreground"
                   }`}
               >
                 {tab.label}
@@ -107,20 +107,20 @@ export function PortalTabs(props: PortalTabsProps) {
       </div>
 
       {/* Main Content Area */}
-      <main className="flex-1 flex flex-col relative bg-slate-50">
+      <main className="flex-1 flex flex-col relative bg-secondary">
         {activeTab === "executive" && <ExecutiveDashboard {...props} />}
         {activeTab === "intelligence" && <IntelligenceClient {...props} />}
         {activeTab === "storytelling" && <StorytellingProfile {...props} />}
       </main>
 
       {/* ── ABOUT & CONTACT ── */}
-      <section className="py-16 bg-white border-t border-slate-200">
+      <section className="py-16 bg-white border-t border-border">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-16 items-start">
             <div>
               <p className="section-label mb-2">About the Institution</p>
-              <h2 className="text-2xl font-bold text-slate-900 mb-5">About Ashoka University</h2>
-              <div className="space-y-4 text-slate-600 leading-relaxed">
+              <h2 className="text-2xl font-bold text-foreground mb-5">About Ashoka University</h2>
+              <div className="space-y-4 text-muted-foreground leading-relaxed">
                 <p>
                   Ashoka University is a pioneer in liberal education in India, helping students become well-rounded individuals who think critically, communicate effectively, and lead with a commitment to public service.
                 </p>
@@ -140,25 +140,25 @@ export function PortalTabs(props: PortalTabsProps) {
                   { icon: Mail, label: "Email", val: "research@ashoka.edu.in" },
                 ].map(c => (
                   <li key={c.label} className="flex items-start gap-3">
-                    <div className="w-8 h-8 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                      <c.icon className="w-4 h-4 text-slate-500" />
+                    <div className="w-8 h-8 bg-secondary border border-border rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                      <c.icon className="w-4 h-4 text-muted-foreground" />
                     </div>
                     <div>
-                      <div className="text-xs font-semibold text-slate-500 mb-0.5">{c.label}</div>
-                      <div className="text-sm text-slate-700">{c.val}</div>
+                      <div className="text-xs font-semibold text-muted-foreground mb-0.5">{c.label}</div>
+                      <div className="text-sm text-foreground">{c.val}</div>
                     </div>
                   </li>
                 ))}
               </ul>
 
-              <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-slate-100">
+              <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-border">
                 {[
                   { icon: Globe, label: "Website", link: summary?.homepage_url || "https://www.ashoka.edu.in" },
                   ...(summary?.ror ? [{ icon: LinkIcon, label: "ROR ID", link: summary.ror }] : []),
                   ...(summary?.ids?.wikipedia ? [{ icon: LinkIcon, label: "Wikipedia", link: summary.ids.wikipedia }] : []),
                 ].map(c => (
                   <a key={c.label} href={c.link} target="_blank" rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 hover:bg-blue-50 text-slate-600 hover:text-blue-700 rounded-lg text-sm font-medium transition-colors border border-slate-200 hover:border-blue-200">
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-secondary hover:bg-blue-50 text-muted-foreground hover:text-blue-700 rounded-lg text-sm font-medium transition-colors border border-border hover:border-blue-200">
                     <c.icon className="w-4 h-4" />
                     {c.label}
                   </a>
@@ -170,9 +170,9 @@ export function PortalTabs(props: PortalTabsProps) {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer className="border-t border-slate-200 bg-slate-50 py-6 mt-auto">
+      <footer className="border-t border-border bg-secondary py-6 mt-auto">
         <div className="container mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span className="text-xs text-slate-400">© {new Date().getFullYear()} Ashoka University Research Intelligence Portal</span>
+          <span className="text-xs text-muted-foreground">© {new Date().getFullYear()} Ashoka University Research Intelligence Portal</span>
         </div>
       </footer>
     </div>

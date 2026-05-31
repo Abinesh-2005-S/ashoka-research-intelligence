@@ -15,14 +15,14 @@ export function BackButton() {
   };
 
   return (
-    <div className="bg-white border-b border-slate-200 sticky top-0 z-40">
+    <div className="bg-white border-b border-border sticky top-0 z-40">
       <div className="container mx-auto px-6 h-12 flex items-center justify-between">
-        <Link href="/" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-900 font-medium transition-colors">
+        <Link href="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground font-medium transition-colors">
           <ArrowLeft className="w-4 h-4" />
           Research Portal
         </Link>
         <div className="flex items-center gap-3">
-          <span className="text-xs text-slate-400">{pageNames[pathname] ?? ""}</span>
+          <span className="text-xs text-muted-foreground">{pageNames[pathname] ?? ""}</span>
           <img src="/logo.svg" alt="Ashoka University" className="h-7 w-auto" />
         </div>
       </div>

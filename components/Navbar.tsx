@@ -19,9 +19,9 @@ export function Navbar() {
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
             <img 
-              src="https://upload.wikimedia.org/wikipedia/en/3/3c/Ashoka_University_Logo.svg" 
+              src="/logo.svg" 
               alt="Ashoka University Logo" 
-              className="h-10 w-auto"
+              className="h-12 w-auto object-contain"
             />
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
