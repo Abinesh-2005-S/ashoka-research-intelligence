@@ -43,3 +43,4 @@ export function AuthorsTable({ authors }: { authors: any[] }) {
     </div>
   );
 }
+

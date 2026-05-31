@@ -9,6 +9,8 @@ export interface InstitutionSummary {
   country_code: string;
   homepage_url: string;
   image_url: string;
+  ror?: string;
+  ids?: { wikipedia?: string };
   summary_stats: {
     h_index: number;
     i10_index: number;
@@ -44,6 +46,7 @@ export interface Publication {
   authorships: Array<{ author: { display_name: string } }>;
   doi: string;
   biblio: { volume?: string; issue?: string; first_page?: string };
+  sustainable_development_goals?: Array<{ id: string; display_name: string; score: number }>;
 }
 
 export interface Author {
@@ -98,10 +101,28 @@ export async function getRecentPublications(
   id: string = ASHOKA_ID,
   page = 1,
   perPage = 25,
-  sortBy: "cited_by_count:desc" | "publication_year:desc" = "cited_by_count:desc"
+  sortBy: "cited_by_count:desc" | "publication_year:desc" = "cited_by_count:desc",
+  filters?: { year?: string; type?: string; isOa?: boolean }
 ): Promise<{ results: Publication[]; meta: { count: number; page: number; per_page: number } }> {
+  let filterStr = `institutions.id:${id}`;
+  if (filters?.year && filters.year !== "all") filterStr += `,publication_year:${filters.year}`;
+  if (filters?.type && filters.type !== "all") filterStr += `,type:${filters.type}`;
+  if (filters?.isOa) filterStr += `,is_oa:true`;
+
   return cachedFetch(
-    `${OPENALEX_API_BASE}/works?filter=institutions.id:${id}&sort=${sortBy}&page=${page}&per-page=${perPage}&select=id,title,publication_year,type,cited_by_count,open_access,primary_location,authorships,doi,biblio`
+    `${OPENALEX_API_BASE}/works?filter=${filterStr}&sort=${sortBy}&page=${page}&per-page=${perPage}&select=id,title,publication_year,type,cited_by_count,open_access,primary_location,authorships,doi,biblio,is_retracted,sustainable_development_goals`
+  );
+}
+
+export async function getPreprints(id: string = ASHOKA_ID) {
+  return cachedFetch<{ results: Publication[], meta: any }>(
+    `${OPENALEX_API_BASE}/works?filter=institutions.id:${id},type:preprint&sort=publication_year:desc&per-page=15`
+  );
+}
+
+export async function getRetractedPublications(id: string = ASHOKA_ID) {
+  return cachedFetch<{ results: Publication[], meta: any }>(
+    `${OPENALEX_API_BASE}/works?filter=institutions.id:${id},is_retracted:true&sort=publication_year:desc&per-page=15`
   );
 }
 

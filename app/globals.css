@@ -7,7 +7,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-open-sans);
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -41,42 +41,42 @@
 }
 
 :root {
-  /* Professional Academic Palette */
-  --brand:        #1e3a5f;   /* deep navy – Ashoka institutional */
-  --brand-light:  #f0f4f8;   /* very light navy tint */
-  --accent:       #2563eb;   /* single accent blue – data/interactive */
-  --accent-light: #eff6ff;   /* accent tint for backgrounds */
-  --success:      #059669;   /* emerald – OA / positive */
-  --success-light:#ecfdf5;
+  /* Ashoka Branding Palette */
+  --brand:        #0d3862;   /* Ashoka Blue */
+  --brand-light:  #17548f;   /* Lighter Ashoka Blue */
+  --accent:       #c4122f;   /* Ashoka Red */
+  --accent-light: #e02846;   
+  --success:      #64748b;   /* muted tone instead of bright emerald */
+  --success-light:#f1f5f9;
 
   /* shadcn/base tokens */
   --background: #ffffff;
-  --foreground: #0f172a;
+  --foreground: #0d3862;
   --card: #ffffff;
-  --card-foreground: #0f172a;
+  --card-foreground: #0d3862;
   --popover: #ffffff;
-  --popover-foreground: #0f172a;
-  --primary: #1e3a5f;
+  --popover-foreground: #0d3862;
+  --primary: #c4122f;
   --primary-foreground: #ffffff;
   --secondary: #f8fafc;
-  --secondary-foreground: #1e3a5f;
+  --secondary-foreground: #0d3862;
   --muted: #f8fafc;
   --muted-foreground: #64748b;
-  --accent-token: #eff6ff;
-  --accent-foreground: #1e3a5f;
+  --accent-token: #f1f5f9;
+  --accent-foreground: #0d3862;
   --destructive: #dc2626;
   --border: #e2e8f0;
   --input: #e2e8f0;
-  --ring: #2563eb;
+  --ring: #94a3b8;
   --radius: 0.5rem;
   --sidebar: #f8fafc;
-  --sidebar-foreground: #0f172a;
-  --sidebar-primary: #1e3a5f;
+  --sidebar-foreground: #0d3862;
+  --sidebar-primary: #c4122f;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #eff6ff;
-  --sidebar-accent-foreground: #1e3a5f;
+  --sidebar-accent: #f1f5f9;
+  --sidebar-accent-foreground: #0d3862;
   --sidebar-border: #e2e8f0;
-  --sidebar-ring: #2563eb;
+  --sidebar-ring: #94a3b8;
 }
 
 @layer base {
@@ -84,7 +84,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-white text-slate-900 antialiased;
+    @apply bg-white text-slate-800 antialiased;
     font-feature-settings: "kern" 1, "liga" 1;
   }
   html {
@@ -93,6 +93,8 @@
   }
   h1, h2, h3, h4, h5, h6 {
     @apply tracking-tight;
+    font-family: Georgia, serif;
+    color: var(--brand);
   }
 }
 
@@ -100,17 +102,17 @@
 @layer components {
   /* Professional card */
   .pro-card {
-    @apply bg-white border border-slate-200 rounded-xl shadow-sm;
+    @apply bg-white border border-slate-200/60 rounded-xl shadow-[0_2px_8px_-2px_rgba(0,0,0,0.05)];
   }
 
   /* Section label above headings */
   .section-label {
-    @apply text-xs font-bold uppercase tracking-widest text-blue-600;
+    @apply text-xs font-semibold uppercase tracking-widest text-slate-400;
   }
 
   /* Subtle stat value */
   .stat-value {
-    @apply text-3xl font-bold text-slate-900 leading-none;
+    @apply text-3xl font-light text-slate-800 leading-none tracking-tight;
   }
   .stat-label {
     @apply text-xs text-slate-500 font-medium mt-1;
@@ -118,32 +120,32 @@
 
   /* Data bar – single accent */
   .data-bar-track {
-    @apply w-full h-2 bg-slate-100 rounded-full overflow-hidden;
+    @apply w-full h-1.5 bg-slate-100 rounded-full overflow-hidden;
   }
   .data-bar-fill {
-    @apply h-full bg-blue-600 rounded-full transition-all duration-700;
+    @apply h-full bg-slate-400 rounded-full transition-all duration-700;
   }
 
   /* Pill badge */
   .badge-neutral {
-    @apply text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200;
+    @apply text-xs font-medium px-2 py-0.5 rounded text-slate-500 bg-slate-50 border border-slate-200;
   }
   .badge-accent {
-    @apply text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100;
+    @apply text-xs font-medium px-2 py-0.5 rounded text-slate-600 bg-slate-100 border border-slate-200;
   }
   .badge-success {
-    @apply text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100;
+    @apply text-xs font-medium px-2 py-0.5 rounded text-slate-600 bg-slate-100 border border-slate-200;
   }
 
   /* Tab button */
   .tab-btn-pro {
-    @apply flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold whitespace-nowrap transition-all;
+    @apply flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium whitespace-nowrap transition-all;
   }
   .tab-btn-pro.active {
-    @apply bg-slate-900 text-white;
+    @apply bg-slate-100 text-slate-900 shadow-sm border border-slate-200/50;
   }
   .tab-btn-pro:not(.active) {
-    @apply text-slate-600 hover:bg-slate-100 hover:text-slate-900;
+    @apply text-slate-500 hover:bg-slate-50 hover:text-slate-800;
   }
 
   /* Page header band */
