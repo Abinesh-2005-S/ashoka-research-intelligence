@@ -9,6 +9,8 @@ export interface InstitutionSummary {
   country_code: string;
   homepage_url: string;
   image_url: string;
+  ror?: string;
+  ids?: { wikipedia?: string };
   summary_stats: {
     h_index: number;
     i10_index: number;

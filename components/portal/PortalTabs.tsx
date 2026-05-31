@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ExecutiveDashboard } from "@/components/executive/ExecutiveDashboard";
 import { IntelligenceClient } from "@/components/intelligence/IntelligenceClient";
 import { StorytellingProfile } from "@/components/storytelling/StorytellingProfile";
-import { BookOpen, Users, ArrowRight, Unlock, Globe, MapPin, Phone, Mail } from "lucide-react";
+import { BookOpen, Users, ArrowRight, Unlock, Globe, MapPin, Phone, Mail, Link as LinkIcon } from "lucide-react";
 
 interface PortalTabsProps {
   summary: any;
@@ -133,12 +133,11 @@ export function PortalTabs(props: PortalTabsProps) {
             {/* ── CONTACTS ── */}
             <div>
               <p className="section-label mb-4">Contact</p>
-              <ul className="space-y-4">
+              <ul className="space-y-4 mb-6">
                 {[
                   { icon: MapPin, label: "Address", val: "Plot No. 2, Rajiv Gandhi Education City, Sonepat, Haryana – 131029, India" },
                   { icon: Phone, label: "Phone", val: "+91 0130 230 0000" },
                   { icon: Mail, label: "Email", val: "research@ashoka.edu.in" },
-                  { icon: Globe, label: "Website", val: "www.ashoka.edu.in" },
                 ].map(c => (
                   <li key={c.label} className="flex items-start gap-3">
                     <div className="w-8 h-8 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
@@ -151,6 +150,20 @@ export function PortalTabs(props: PortalTabsProps) {
                   </li>
                 ))}
               </ul>
+              
+              <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-slate-100">
+                {[
+                  { icon: Globe, label: "Website", link: summary?.homepage_url || "https://www.ashoka.edu.in" },
+                  ...(summary?.ror ? [{ icon: LinkIcon, label: "ROR ID", link: summary.ror }] : []),
+                  ...(summary?.ids?.wikipedia ? [{ icon: LinkIcon, label: "Wikipedia", link: summary.ids.wikipedia }] : []),
+                ].map(c => (
+                  <a key={c.label} href={c.link} target="_blank" rel="noopener noreferrer" 
+                     className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 hover:bg-blue-50 text-slate-600 hover:text-blue-700 rounded-lg text-sm font-medium transition-colors border border-slate-200 hover:border-blue-200">
+                    <c.icon className="w-4 h-4" />
+                    {c.label}
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
         </div>
