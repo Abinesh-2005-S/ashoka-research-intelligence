@@ -44,6 +44,7 @@ export interface Publication {
   authorships: Array<{ author: { display_name: string } }>;
   doi: string;
   biblio: { volume?: string; issue?: string; first_page?: string };
+  sustainable_development_goals?: Array<{ id: string; display_name: string; score: number }>;
 }
 
 export interface Author {
@@ -107,7 +108,7 @@ export async function getRecentPublications(
   if (filters?.isOa) filterStr += `,is_oa:true`;
 
   return cachedFetch(
-    `${OPENALEX_API_BASE}/works?filter=${filterStr}&sort=${sortBy}&page=${page}&per-page=${perPage}&select=id,title,publication_year,type,cited_by_count,open_access,primary_location,authorships,doi,biblio,is_retracted`
+    `${OPENALEX_API_BASE}/works?filter=${filterStr}&sort=${sortBy}&page=${page}&per-page=${perPage}&select=id,title,publication_year,type,cited_by_count,open_access,primary_location,authorships,doi,biblio,is_retracted,sustainable_development_goals`
   );
 }
 

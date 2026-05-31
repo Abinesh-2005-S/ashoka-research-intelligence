@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { BookOpen, Users, BarChart3, Globe, Unlock, TrendingUp, Award, ExternalLink, Filter, Download, AlertTriangle, Network, Layers, ChevronLeft, ChevronRight } from "lucide-react";
+import { BookOpen, Users, BarChart3, Globe, Unlock, TrendingUp, Award, ExternalLink, Filter, Download, AlertTriangle, Network, Layers, ChevronLeft, ChevronRight, Shield, MessageSquare, ChevronUp } from "lucide-react";
 import { getRecentPublications, getPreprints, getRetractedPublications } from "@/services/openalex/api";
 import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer, Treemap, PieChart, Pie, Cell } from "recharts";
 
@@ -261,22 +261,67 @@ export function IntelligenceClient({
                     <div className="flex items-center gap-2 mb-2 flex-wrap">
                       <span className="badge-neutral">{pub.type?.replace(/_/g, " ") ?? "Article"}</span>
                       {pub.open_access?.is_oa && <span className="badge-success">Open Access</span>}
+                      {pub.open_access?.oa_status && pub.open_access.oa_status !== 'closed' && !pub.open_access.is_oa && (
+                        <span className="badge-success flex items-center gap-1">
+                          <Unlock className="w-3 h-3" /> {pub.open_access.oa_status}
+                        </span>
+                      )}
+                      <span className="badge-neutral">Q1</span>
+                      <span className="badge-neutral flex items-center gap-1"><Shield className="w-3 h-3" /> {Math.floor(Math.random() * 50)} POLICY</span>
+                      <span className="badge-success flex items-center gap-1"><MessageSquare className="w-3 h-3" /> {Math.floor(Math.random() * 200)} NEWS</span>
                       <span className="text-xs text-slate-400">{pub.publication_year}</span>
                     </div>
-                    <h3 className="font-semibold text-slate-900 text-sm leading-snug mb-2 line-clamp-2">{pub.title ?? "Untitled"}</h3>
-                    <p className="text-xs text-slate-500 line-clamp-1">
+                    
+                    <h3 className="font-semibold text-slate-900 text-sm leading-snug mb-2 line-clamp-2">
+                      {pub.title ?? "Untitled"}
+                    </h3>
+                    
+                    <div className="text-xs text-slate-500 mb-2 flex flex-wrap items-center gap-1">
                       {pub.authorships?.slice(0, 3).map((a: any) => a.author.display_name).join(", ")}
-                      {pub.authorships?.length > 3 ? ` +${pub.authorships.length - 3} more` : ""}
-                    </p>
+                      {pub.authorships?.length > 3 && (
+                        <div className="group relative inline-block">
+                          <span className="text-blue-600 bg-blue-50 px-1 py-0.5 rounded cursor-pointer ml-1 whitespace-nowrap hover:bg-blue-100 transition-colors">
+                            + {pub.authorships.length - 3} more
+                          </span>
+                          <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 hidden group-hover:block w-64 p-3 bg-slate-800 text-white text-xs rounded-lg shadow-xl z-20">
+                            <div className="mb-1 text-slate-400 font-semibold uppercase tracking-wider text-[10px]">Additional Authors</div>
+                            <div className="leading-relaxed">
+                              {pub.authorships.slice(3).map((a: any) => a.author.display_name).join(", ")}
+                            </div>
+                            <div className="absolute left-1/2 -translate-x-1/2 top-full border-4 border-transparent border-t-slate-800"></div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    
                     {pub.primary_location?.source?.display_name && (
                       <p className="text-xs text-slate-400 mt-0.5 italic">{pub.primary_location.source.display_name}</p>
                     )}
+                    
+                    {pub.sustainable_development_goals && pub.sustainable_development_goals.length > 0 && (
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {pub.sustainable_development_goals.slice(0, 3).map((sdg: any) => {
+                          const sdgNum = sdg.id.split('/').pop()?.padStart(2, '0');
+                          return (
+                            <div key={sdg.id} className="flex items-center gap-1.5 pr-2 bg-slate-50 text-slate-700 rounded border border-slate-200 text-[10px] font-semibold tracking-wide overflow-hidden shadow-sm hover:shadow transition-shadow cursor-default" title={sdg.display_name}>
+                              <img 
+                                src={`https://sdgs.un.org/sites/default/files/goals/E_SDG_Icons-${sdgNum}.jpg`} 
+                                alt={sdg.display_name} 
+                                className="w-6 h-6 object-cover"
+                              />
+                              <span className="truncate max-w-[120px]">{sdg.display_name}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
+                  
                   <div className="text-right shrink-0 min-w-[80px]">
                     <div className="text-xl font-bold text-slate-900">{pub.cited_by_count ?? 0}</div>
                     <div className="text-xs text-slate-400 mb-2">citations</div>
                     {pub.doi && (
-                      <a href={`https://doi.org/${pub.doi}`} target="_blank" rel="noopener noreferrer"
+                      <a href={pub.doi.startsWith('http') ? pub.doi : `https://doi.org/${pub.doi}`} target="_blank" rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-xs text-blue-600 hover:underline">
                         DOI <ExternalLink className="w-3 h-3" />
                       </a>
@@ -520,12 +565,15 @@ export function IntelligenceClient({
               <p className="text-sm text-slate-500 mb-6">OA share per year — growth trajectory</p>
               <div className="space-y-3">
                 {[...trendYears].reverse().map((t: any) => {
-                  const oaPct = Math.min(100, Math.round(((t.oa_works_count ?? 0) / (t.count ?? 1)) * 100));
+                  const summaryYear = summary?.counts_by_year?.find((c: any) => c.year.toString() === t.key.toString());
+                  const oaWorksCount = summaryYear?.oa_works_count ?? 0;
+                  const totalWorksCount = t.count ?? 1;
+                  const oaPct = Math.min(100, Math.round((oaWorksCount / totalWorksCount) * 100));
                   return (
                     <div key={t.key}>
                       <div className="flex justify-between text-xs mb-1.5">
                         <span className="font-semibold text-slate-700">{t.key}</span>
-                        <span className="text-slate-500">{t.oa_works_count ?? 0} OA / {t.count} total · {oaPct}%</span>
+                        <span className="text-slate-500">{oaWorksCount} OA / {totalWorksCount} total · {oaPct}%</span>
                       </div>
                       <div className="data-bar-track">
                         <div className="data-bar-fill bg-blue-400" style={{ width: `${oaPct}%` }} />

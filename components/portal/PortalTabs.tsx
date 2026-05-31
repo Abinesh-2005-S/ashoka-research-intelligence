@@ -30,7 +30,7 @@ export function PortalTabs(props: PortalTabsProps) {
 
   return (
     <div className="flex flex-col min-h-screen">
-      
+
       {/* ── HERO ── */}
       <section className="relative overflow-hidden border-b border-slate-200">
         <div className="absolute inset-0">
@@ -93,12 +93,11 @@ export function PortalTabs(props: PortalTabsProps) {
               { id: "intelligence", label: "Intelligence Platform" },
               { id: "storytelling", label: "Story Flow" }
             ].map(tab => (
-              <button 
+              <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`py-4 text-sm font-bold whitespace-nowrap transition-colors border-b-2 ${
-                  activeTab === tab.id ? "border-blue-600 text-blue-700" : "border-transparent text-slate-500 hover:text-slate-900"
-                }`}
+                className={`py-4 text-sm font-bold whitespace-nowrap transition-colors border-b-2 ${activeTab === tab.id ? "border-blue-600 text-blue-700" : "border-transparent text-slate-500 hover:text-slate-900"
+                  }`}
               >
                 {tab.label}
               </button>
@@ -113,7 +112,7 @@ export function PortalTabs(props: PortalTabsProps) {
         {activeTab === "intelligence" && <IntelligenceClient {...props} />}
         {activeTab === "storytelling" && <StorytellingProfile {...props} />}
       </main>
-      
+
       {/* ── ABOUT & CONTACT ── */}
       <section className="py-16 bg-white border-t border-slate-200">
         <div className="container mx-auto px-6">
@@ -130,7 +129,7 @@ export function PortalTabs(props: PortalTabsProps) {
                 </p>
               </div>
             </div>
-            
+
             {/* ── CONTACTS ── */}
             <div>
               <p className="section-label mb-4">Contact</p>
