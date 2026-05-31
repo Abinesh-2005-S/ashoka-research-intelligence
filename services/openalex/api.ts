@@ -55,8 +55,12 @@ export interface Author {
   works_count: number;
   cited_by_count: number;
   summary_stats: { h_index: number; i10_index: number };
-  last_known_institutions: Array<{ display_name: string }>;
+  last_known_institutions: Array<{ display_name: string; country_code?: string }>;
   topics: Array<{ display_name: string; count: number }>;
+  ids?: { orcid?: string; openalex?: string };
+  x_concepts?: Array<{ id: string; display_name: string; score: number }>;
+  affiliations?: Array<{ institution: { display_name: string; country_code: string } }>;
+  counts_by_year?: Array<{ year: number; works_count: number; cited_by_count: number }>;
 }
 
 const cache = new Map<string, { data: unknown; ts: number }>();
@@ -86,6 +90,24 @@ export async function getPublicationTrends(id: string = ASHOKA_ID) {
 export async function getTopAuthors(id: string = ASHOKA_ID): Promise<Author[]> {
   const data = await cachedFetch<{ results: Author[] }>(
     `${OPENALEX_API_BASE}/authors?filter=affiliations.institution.id:${id}&sort=cited_by_count:desc&per-page=15`
+  );
+  return data.results;
+}
+
+export async function getAuthorsPaginated(
+  id: string = ASHOKA_ID,
+  page = 1,
+  perPage = 15,
+  sortBy: string = "cited_by_count:desc"
+): Promise<{ results: Author[]; meta: { count: number; page: number; per_page: number } }> {
+  return cachedFetch(
+    `${OPENALEX_API_BASE}/authors?filter=affiliations.institution.id:${id}&sort=${sortBy}&page=${page}&per-page=${perPage}`
+  );
+}
+
+export async function getAuthorTopPublications(authorId: string): Promise<Publication[]> {
+  const data = await cachedFetch<{ results: Publication[] }>(
+    `${OPENALEX_API_BASE}/works?filter=author.id:${authorId}&sort=cited_by_count:desc&per-page=10`
   );
   return data.results;
 }
